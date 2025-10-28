@@ -233,6 +233,14 @@ def summarize(writer, global_step, scalars={}, histograms={}, images={}, audios=
   for k, v in images.items():
     writer.add_image(k, v, global_step, dataformats='HWC')
   for k, v in audios.items():
+    if isinstance(v, torch.Tensor):
+        v = v.detach().cpu()
+        if v.dim() == 1:
+            v = v.unsqueeze(0)  # [T] -> [1, T]
+        elif v.dim() == 2 and v.shape[0] not in (1, 2):
+            v = v[0].unsqueeze(0)  # [batch, T] -> [1, T]
+        elif v.dim() == 3:
+            v = v[0]  # [batch, 1, T] -> [1, T]
     writer.add_audio(k, v, global_step, audio_sampling_rate)
 
 
