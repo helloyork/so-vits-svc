@@ -19,7 +19,7 @@ onnxsim
 onnxoptimizer
 fairseq==0.12.2
 librosa==0.9.1
-tensorboard
+tensorboard==2.12
 tensorboardX
 transformers
 edge_tts
